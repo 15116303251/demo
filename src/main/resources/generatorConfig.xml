@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 数据库驱动包位置 -->
+    <classPathEntry location="F:\install\apache-maven-3.5.4\maven_repository\mysql\mysql-connector-java\5.1.41\mysql-connector-java-5.1.41.jar" />
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <!-- 			<property name="suppressAllComments" value="true" /> -->
+        </commentGenerator>
+
+        <!-- 数据库链接URL、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/huawei" userId="root" password="250250qwe">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 生成模型的包名和位置 -->
+        <javaModelGenerator targetPackage="com.example.demo.dao.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 生成的映射文件包名和位置 -->
+        <sqlMapGenerator targetPackage="com.example.demo.dao" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.demo.dao" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--要生成文件对应的表的名字  如果catalog不为空，生成的文件前面都会加上这个名字-->
+        <!--&lt;!&ndash;用户表&ndash;&gt;-->
+        <!--<table catalog="" tableName="book_info" domainObjectName="BookInfo"  />-->
+        <table catalog="" tableName="new_kddhs" domainObjectName="NewKddhs"  />
+
+        <!--<table catalog="" tableName="kdgs" domainObjectName="Kdgs"  />-->
+
+        <!--&lt;!&ndash;事件触发表&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_activity_assignment" domainObjectName="WxAssignmentActivity"  />-->
+
+        <!--&lt;!&ndash;用户参与单场活动次数表&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_activity_count" domainObjectName="WxActivityCount"  />-->
+
+        <!--菜单配置表-->
+        <!--<table catalog="" tableName="wxfwh_menu_config" domainObjectName="WxMenuConfig"  />-->
+
+        <!--&lt;!&ndash;微信的消息日志&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_msg_log" domainObjectName="WxMsgLog"  />-->
+
+        <!--&lt;!&ndash;微信活动奖励表&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_reply_award" domainObjectName="WxActivityAward"  />-->
+
+        <!--&lt;!&ndash;图片回复&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_reply_image" domainObjectName="WxImage"  />-->
+
+        <!--&lt;!&ndash;回复新闻&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_reply_news" domainObjectName="WxNews"  />-->
+
+        <!--回复文章-->
+        <!--<table catalog="" tableName="wxfwh_reply_news_article_info" domainObjectName="WxArticleInfo"  />-->
+
+        <!--&lt;!&ndash;回复模板&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_reply_template" domainObjectName="WxReplyTemplateInfo"  />-->
+
+        <!--&lt;!&ndash;回复文字&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_reply_text" domainObjectName="WxText"  />-->
+
+        <!--&lt;!&ndash;回复视频&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_reply_video" domainObjectName="WxVideo"  />-->
+
+        <!--&lt;!&ndash;回复声音&ndash;&gt;-->
+        <!--<table catalog="" tableName="wxfwh_reply_voice" domainObjectName="WxVoice"  />-->
+
+        <!--模板信息表-->
+        <!--<table catalog="" tableName="animals" domainObjectName="Animal"  />-->
+        <!--<table catalog="" tableName="habit" domainObjectName="AnimalHabit"  />-->
+        <!--<table catalog="" tableName="see_record" domainObjectName="AnimalSeeRecord"  />-->
+        <!--<table catalog="" tableName="adopt_condition" domainObjectName="AdoptCondition"  />-->
+
+    </context>
+</generatorConfiguration>
+
