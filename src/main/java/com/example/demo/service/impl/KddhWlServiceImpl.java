@@ -16,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+
 import java.util.List;
+
 import static com.example.demo.constant.Constant.*;
 import static com.example.demo.constant.KddhStatusEnum.EXCEPTION_KD;
 import static com.example.demo.constant.KddhStatusEnum.NOT_WL_KD;
@@ -44,19 +46,10 @@ public class KddhWlServiceImpl implements IKddhWlService {
 
 
     /**
-     * @param kdgsNo
      * @throws ServiceException
      */
     @Override
-    public void queryKddhWlState(String kdgsNo) throws ServiceException {
-
-//        List<Kdgs>kdgs=null;
-//        if(!ObjectUtils.isEmpty(kdgsNo)){
-//            kdgs= new ArrayList<>();
-//            Kdgs k=new Kdgs();
-//            k.setKdgsNo(kdgsNo);
-//            kdgs.add(k);
-//        }
+    public void queryKddhWlState() throws ServiceException {
 
         //1、获取所有的快递公司
         List<Kdgs>kdgs= kdgsMapper.getAllKdgs();
@@ -64,7 +57,7 @@ public class KddhWlServiceImpl implements IKddhWlService {
         //2、准备调用第三方接口的参数
         if(!ObjectUtils.isEmpty(kdgs)){
 
-            //循环所有的快递公司进行状态查询，可在这里开启多个线程
+            //循环所有的快递公司进行状态查询，todo 可在这里开启多个线程
             for (Kdgs k:kdgs) {
                 this.sendThirdRequestByKdgs(k);
             }
@@ -75,14 +68,14 @@ public class KddhWlServiceImpl implements IKddhWlService {
     @Override
     public void getQueryWlResult() {
 
-        //1、schedule_task 查询所有的taskName
+        //todo 1、从schedule_task 查询所有的taskName
 
         //2、根据任务名进行相应的循环
         List<String> taskNameList=List.of("task1","task2");
 
         if(!ObjectUtils.isEmpty(taskNameList)){
-            for (String taskName:taskNameList) {//可以采用多线程加快处理，但需考虑资源
-
+            for (String taskName : taskNameList) {
+                //todo 可以采用多线程加快处理，但需考虑资源
                 try {
                     this.dealThirdResult(this.getResult(1,taskName),1,taskName);
                 }catch (Exception e){
@@ -94,6 +87,7 @@ public class KddhWlServiceImpl implements IKddhWlService {
 
     }
 
+
     /**
      * 构造查询结果循环体
      * @param pageNo
@@ -102,7 +96,6 @@ public class KddhWlServiceImpl implements IKddhWlService {
      */
     private String getResult(Integer pageNo,String taskName){
 
-        //创建请求参数
         BatchQueryResultParam param = BatchQueryResultParam.builder()
                 .appid(Integer.parseInt(thirdConfig.getAppId()))
                 .outerid(thirdConfig.getOuterId()).pageno(pageNo).taskname(taskName).build();
@@ -134,31 +127,29 @@ public class KddhWlServiceImpl implements IKddhWlService {
                     return;
                 }
 
-//                int maxPageSize=msgJson.getIntValue("totalpage");
-//                //若是进度100，此时可以相应的数据库更新
-//                //处理当前页的100条数据
-//                List<BatchQueryResultParam> perOrderStatusArr= (List<BatchQueryResultParam>) msgJson.getObject("list",BatchQueryResultParam.class);
-//                for (Object perOrderStatus:perOrderStatusArr) {
-//
-//                    //更新状态到真正的快递号表
-//                    //更新new_kddhs 中的状态，若状态为疑似无物流，表中count+1，若是为已签收则删除该条记录
-//                    //异常单以及无物流单号提醒相应人员处理
-//                }
-//
-//
-//                if(pageNo+1<=maxPageSize){//todo 需考虑栈深度
-//                    this.dealThirdResult(this.getResult(pageNo+1,taskName),pageNo+1,taskName);
-//                }
-
                 //todo 写到这里发现可能会出现线程过多，或者内存、cpu出现问题
-                //todo 第一想法：将此时的返回进度为100% 的任务，任务名称放到数据库，哪个100%了，就执行哪个。
+                //todo 第一想法（暂时选择这个）：将此时的返回进度为100% 的任务，任务名称放到数据库，哪个100%了，就执行哪个。
                 //todo 第二想法：将此已经100% 的任务，丢到MQ ，设置不一样的延迟时间，进行分开执行。
-
             }
         }
 
     }
 
+
+    @Override
+    public void executeTask() {
+        //todo 从taskschedule 获取进度已经100%的任务进行执行
+
+        //todo 循环执行几个任务
+        {
+            //todo 执行一个任务直到最大页数
+            //todo 执行细节：1、判断快递单状态（无物流、异常单）发送消息给处理人员
+            //todo          2、所有状态更新状态到new_kddhs的status,若是已签收，删掉数据
+            //todo          3、更新状态为0:运输中、1:已签收、2:代收 到原来的快递单表
+        }
+
+
+    }
 
 
     /**
@@ -200,8 +191,9 @@ public class KddhWlServiceImpl implements IKddhWlService {
                 String content="拼接成&方式参数";
                 String taskName=HttpUtils.doPost(CREATE_BATCH_QUERY, content);
 
-                //4、存储名字到数据新的专门一张任务表schedule_task
+                //todo 4、存储名字到数据新的专门一张任务表schedule_task
             }catch (Exception e){
+                log.error(e.getMessage());
                 list=null;//防止出现异常导致后面的调用停止
             }
         }
